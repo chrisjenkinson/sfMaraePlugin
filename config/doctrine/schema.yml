@@ -1,0 +1,58 @@
+sfMaraeCategory:
+  actAs:
+     NestedSet:
+       hasManyRoots:   true
+       rootColumnName: root_id
+     Sluggable: ~
+  columns:
+    id:          { type: integer, primary: true, autoincrement: true }
+    name:        { type: string(250), notnull: true }
+    description: { type: string(1000) }
+
+sfMaraePost:
+  actAs:
+    NestedSet:
+      hasManyRoots:   true
+      rootColumnName: root_id
+    Timestampable: ~
+  columns:
+    id:          { type: integer, primary: true, autoincrement: true }
+    category_id: { type: integer, notnull: true }
+    user_id:     { type: integer, notnull: true }
+    title:       { type: string(250) }
+    message:     { type: string(20000), notnull: true }
+  relations:
+    sfMaraeCategory: { local: category_id, foreign: id, onDelete: CASCADE }
+    sfGuardUser:     { local: user_id, foreign: id, onDelete: CASCADE }
+#    sfMaraeTags:     { class: sfMaraeTag, local: id, foreign: id, refClass: sfMaraePostTag, foreignAlias: sfMaraePosts }
+#    sfMaraeVoter:    { class: sfGuardUser, local: id, foreign: id, refClass: sfMaraePostVote, foreignAlias: sfMaraePosts }
+
+# sfMaraeTag:
+#   actAs: [Sluggable]
+#   columns:
+#     id:   { type: integer, primary: true, autoincrement: true }
+#     name: { type: string(100), notnull: true }
+#   relations:
+#     sfMaraePosts: { class: sfMaraePost, local: id, foreign: id, refClass: sfMaraePostTag, foreignAlias: sfMaraeTags }
+
+# sfMaraeTagRedirect:
+#   columns:
+#     from_id: { type: integer, primary: true }
+#     to_id:   { type: integer, primary: true }
+
+# sfMaraePostTag:
+#   columns:
+#     post_id: { type: integer, primary: true }
+#     tag_id:  { type: integer, primary: true }
+#   relations:
+#     sfMaraePost: { local: post_id, foreign: id, onDelete: CASCADE }
+#     sfMaraeTag:  { local: tag_id, foreign: id, onDelete: CASCADE }
+
+# sfMaraePostVote:
+#   columns:
+#     post_id: { type: integer, primary: true }
+#     user_id: { type: integer, primary: true }
+#     vote:    { type: integer, notnull: true, default: 0 }
+#   relations:
+#     sfMaraePost: { local: post_id, foreign: id, onDelete: CASCADE }
+#     sfGuardUser: { local: user_id, foreign: id, onDelete: CASCADE }
