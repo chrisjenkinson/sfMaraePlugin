@@ -1,0 +1,11 @@
+sfMaraeCategory:
+  main:
+    name: First forum
+    description: This is a forum
+    children:
+      blog:
+        name: Subforum 1
+        description: Sub forum.
+  offtopic:
+    name: Off topic
+    description: This is an offtopic forum.

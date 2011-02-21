@@ -1,0 +1,77 @@
+sfMaraePlugin
+=============
+
+sfMaraePlugin has several external dependencies:
+
+  * sfDoctrineGuardPlugin
+  * sfDoctrineNestedSetPlugin
+  * HTMLPurifier
+  * sfXssSafePlugin
+
+Installing dependencies
+-----------------------
+
+Please read the sfDoctrineGuardPlugin documentation for information on installing it.
+
+sfDoctrineNestedSetPlugin can be installed with the following command:
+
+    symfony plugin:install sfDoctrineNestedSetPlugin
+
+[HTMLPurifier](http://htmlpurifier.org/) is a large PHP library which filters HTML. Comprehensive installation information is available 
+on their website, but it can be installed as a PEAR package:
+
+    pear channel-discover htmlpurifier.org
+    pear install hp/HTMLPurifier
+
+sfXssSafePlugin is a symfony wrapper for HTMLPurifier. I had some problems with the package listed on  [symfony-project.org](http://www.symfony-project.org/plugins/sfXssSafePlugin) but 
+have published a version which works (for me) on [GitHub](https://github.com/chrisjenkinson/sfXssSafePlugin). If you have problems with the original package, please try my 
+version and post bugs/issues on GitHub.
+
+Add the following to `apps/frontend/app.yml`:
+
+    sfXssSafePlugin:
+      definition:
+        AutoFormat:
+          AutoParagraph:     true
+          Linkify:           true
+        HTML:
+          Allowed:          "b,i,strong,ul,ol,li,p,a[href],blockquote"
+          DefinitionID:      "sfMaraePlugin"
+          DefinitionRev:     1
+
+For information about enabling additional HTML tags, read the HTMLPurifier documentation.
+
+Installing sfMaraePlugin
+------------------------
+
+  1. Install sfMaraePlugin into your `plugins/` directory.
+  
+  2. Copy `plugins/sfMaraePlugin/data/fixtures/fixtures.yml.sample` to `data/fixtures/sfMaraePlugin.yml` and edit it to create your categories.
+  
+  3. Rebuild your classes and create the tables in your database via your preferred method.
+  
+  4. Insert your categories into the database:
+     
+         symfony doctrine:data-load data/fixtures/sfMaraePlugin.yml
+  
+  5. That's it! If you are still having problems please open an issue on GitHub.
+
+Administering sfMaraePlugin
+---------------------------
+
+sfMaraePlugin uses the permissions management in sfDoctrineGuardPlugin. Permissions are checked on a category-by-category basis and sub categories do not inherit the permissions
+of their parents. Users must be logged in to start threads or reply to existing threads. The following permissions exist:
+
+  * show - the user can see the category page and posts in the category
+  * new - the user can start new threads
+  * reply - the user can reply to existing threads
+  * edit - the user can edit their posts
+  * delete - the user can delete their posts (if they have no replies)
+
+If you need more fine-grained permissions, please open an issue on GitHub.
+
+All permissions are enabled by default. sfMaraePlugin checks for a permission with the following name for each action:
+
+    sfMaraeCategory_<category_id>_<permission_name>
+
+If the permission exists, sfMaraePlugin will require the user to have the permission before continuing. The documentation for sfDoctrineGuardPlugin explains permission groups in more detail.
