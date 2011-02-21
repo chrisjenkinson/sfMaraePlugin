@@ -58,8 +58,10 @@ class sfMaraeCategoryActions extends BasesfMaraeCategoryActions
 		$post->orderByCreatedAt();
 		
 		$this->posts = $postTree->fetchRoots();
+
+		$this->can_post_new = $this->checkPermission('new', $this->root['id']);
 		
-		if ($this->getUser()->isAuthenticated())
+		if ($this->can_post_new)
 		{
 			$this->form = new sfMaraePostForm($post, array('isRoot' => true));
 		}

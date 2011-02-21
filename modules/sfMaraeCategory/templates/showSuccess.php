@@ -25,6 +25,6 @@
 
 <hr />
 
-<?php if ($sf_user->isAuthenticated()): ?>
+<?php if ($can_post_new): ?>
 <?php include_partial('sfMaraePost/post_new', array('form' => $form, 'category' => $root)) ?>
 <?php endif; ?>
