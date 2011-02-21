@@ -17,7 +17,7 @@
 		<tr>
 			<td>
 				<div class="marae-post-title"><?php echo link_to($root['title'], 'post_show_post', array('id' => $root['id'], 'replies' => (($root['rgt'] - $root['lft'] - 1)/2))) ?></div>
-				<div class="marae-post-about quiet smaller">posted by <strong><?php echo $root['sfGuardUser']['username'] ?></strong> <? echo time_ago_in_words(strtotime($root['created_at']), true) ?> ago</div>
+				<div class="marae-post-about quiet smaller">posted by <strong><?php echo $root['sfGuardUser']['username'] ?></strong> <?php echo time_ago_in_words(strtotime($root['created_at']), true) ?> ago</div>
 			</td>
 			<td class="center">
 				<div class="marae-post-replies quiet"><?php echo (($root['rgt'] - $root['lft'] - 1)/2) ?></div>
