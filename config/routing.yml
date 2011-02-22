@@ -14,7 +14,7 @@ post_search:
   param:   { module: sfMaraePost, action: search, slug: "" }
 
 post_new:
-  url:     /post/new
+  url:     /post/:id/new
   class:   sfDoctrineRoute
   options: { model: sfMaraeCategory, type: object }
   param:   { module: sfMaraePost, action: new }
@@ -22,7 +22,7 @@ post_new:
     sf_method: get
 
 post_new_create:
-  url:     /post
+  url:     /post/:id/new
   class:   sfDoctrineRoute
   options: { model: sfMaraeCategory, type: object }
   param:   { module: sfMaraePost, action: createNew }

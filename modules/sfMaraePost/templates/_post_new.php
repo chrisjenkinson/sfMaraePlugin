@@ -1,7 +1,7 @@
 <?php use_stylesheets_for_form($form) ?>
 <?php use_javascripts_for_form($form) ?>
 
-<?php echo form_tag_for($form, '@post_new') ?>
+<form method="post" action="<?php echo url_for('@post_new_create?id=' . $category['id']) ?>">
 <?php echo $form->renderHiddenFields() ?>
 
 <fieldset>
