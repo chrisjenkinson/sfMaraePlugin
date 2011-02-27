@@ -7,6 +7,7 @@ sfMaraePlugin has several external dependencies:
   * sfDoctrineNestedSetPlugin
   * HTMLPurifier
   * sfXssSafePlugin
+  * jQuery and jQuery UI
 
 Installing dependencies
 -----------------------
@@ -41,6 +42,8 @@ Add the following to `apps/frontend/app.yml`:
 
 For information about enabling additional HTML tags, read the HTMLPurifier documentation.
 
+jQuery and jQuery UI installation information is available on the [jQuery website](http://www.jquery.com); alternatively use the [Google-hosted version](http://code.google.com/apis/libraries/).
+
 Installing sfMaraePlugin
 ------------------------
 
@@ -49,12 +52,16 @@ Installing sfMaraePlugin
   2. Copy `plugins/sfMaraePlugin/data/fixtures/fixtures.yml.sample` to `data/fixtures/sfMaraePlugin.yml` and edit it to create your categories.
   
   3. Rebuild your classes and create the tables in your database via your preferred method.
+
+  4. Publish the sfMaraePlugin web assets and link them into your layout via your preferred method (e.g. editing `apps/frontend/config/view.yml`):
+
+         symfony plugin:publish-assets
   
-  4. Insert your categories into the database:
+  5. Insert your categories into the database:
      
          symfony doctrine:data-load data/fixtures/sfMaraePlugin.yml
   
-  5. That's it! If you are still having problems please open an issue on GitHub.
+  6. That's it! If you are still having problems please open an issue on GitHub.
 
 Administering sfMaraePlugin
 ---------------------------
@@ -75,3 +82,4 @@ All permissions are enabled by default. sfMaraePlugin checks for a permission wi
     sfMaraeCategory_<category_id>_<permission_name>
 
 If the permission exists, sfMaraePlugin will require the user to have the permission before continuing. The documentation for sfDoctrineGuardPlugin explains permission groups in more detail.
+
