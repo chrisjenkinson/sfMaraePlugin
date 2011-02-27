@@ -44,7 +44,75 @@ class sfMaraePostActions extends BasesfMaraePostActions
 	
 	public function executeSearch(sfWebRequest $request)
 	{
+	}
+	
+	public function executeVoteUp(sfWebRequest $request)
+	{
+		return $this->processVote($request, 1);
+	}
+	
+	public function executeVoteDown(sfWebRequest $request)
+	{
+		return $this->processVote($request, -1);
+	}
+	
+	protected function processVote(sfWebRequest $request, $value)
+	{
+		if (!$this->getUser()->isAuthenticated())
+		{
+			$this->getUser()->setFlash('warning', 'You must be signed in to do that!');
+			$this->forward(sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action'));
+		}
 		
+		$post = $this->getRoute()->getObject();
+		
+		$this->category = sfMaraeCategoryTable::getInstance()->findOneById($post['category_id']);
+		
+		if (!$this->checkPermission('show', $this->category['id']))
+		{
+			$this->getUser()->setFlash('error', 'You do not have permission to view threads in this category.');
+			$this->redirect($this->generateUrl('forum_show_forum', array('slug' => $this->category['slug'])));
+		}
+		
+		$tree = $post->getTreeObject();
+		$node = $post->getNode();
+		
+		$root = $tree->fetchRoot($node->getRootValue());
+		
+		$pv = new sfMaraePostVote();
+		
+		if (sfMaraePostVote::hasUserVoted($post['sfMaraePostVote'], $this->getUser()->getId()))
+		{
+			$pv->assignIdentifier(array(
+				'post_id'	=> $post['id'],
+				'user_id'	=> $this->getUser()->getId()
+			));
+		}
+		else
+		{
+			$pv->setPostId($post['id']);
+			$pv->setUserId($this->getUser()->getId());
+		}
+		
+		$pv->setVote($value);
+		
+		$pv->save();
+		
+		if ($request->isXmlHttpRequest())
+		{
+			$postVote = sfMaraePostVoteTable::getInstance()->findByPostId($post['id']);
+			$rating = sfMaraePostVote::getAverageRating($postVote);
+				
+			return $this->renderText(json_encode(array(
+				'opacity'			=> sfMaraePost::getOpacity($rating),
+				'backgroundColor'	=> sfMaraePost::getColor($rating)
+			)));
+		}
+		
+		$this->redirect($this->generateUrl('post_show_post', array(
+			'id'		=> $root['id'],
+			'replies'	=> (($root['rgt'] - $root['lft'] - 1) / 2)
+		)) . '#marae-post-' . $post['id']);
 	}
 	
 	protected function newAndCreateNew()
@@ -290,6 +358,14 @@ class sfMaraePostActions extends BasesfMaraePostActions
 				{
 					$node->insertAsLastChildOf(sfMaraePostTable::getInstance()->find($parentId));
 					
+					$pv = new sfMaraePostVote();
+					
+					$pv->setPostId($post['id']);
+					$pv->setUserId($this->getUser()->getId());
+					$pv->setVote(1);
+					
+					$pv->save();
+					
 					$root = $tree->fetchRoot($node->getRootValue());
 					
 					$this->redirect($this->generateUrl('post_show_post', array(
@@ -301,6 +377,14 @@ class sfMaraePostActions extends BasesfMaraePostActions
 				{
 					$node->setRootValue($post->getMaxRoot()+1);
 					$tree->createRoot($post);
+					
+					$pv = new sfMaraePostVote();
+					
+					$pv->setPostId($post['id']);
+					$pv->setUserId($this->getUser()->getId());
+					$pv->setVote(1);
+					
+					$pv->save();
 					
 					$this->redirect($this->generateUrl('post_show_post', array(
 						'id'		=> $post['id'], 

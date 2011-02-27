@@ -1,4 +1,4 @@
-<?php if (!empty($categories)): ?>
+<?php if (!empty($categories) && count($categories)): ?>
 <h3>Categories</h3>
 <div id="marae-subcategories">
 <?php foreach ($categories as $k => $root): ?>
