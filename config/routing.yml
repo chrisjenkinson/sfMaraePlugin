@@ -8,6 +8,18 @@ forum_show_forum:
   options: { model: sfMaraeCategory, type: object }
   param:   { module: sfMaraeCategory, action: show }
 
+post_vote_up:
+  url:     /post/:id/voteup
+  class:   sfDoctrineRoute
+  options: { model: sfMaraePost, type: object }
+  param:   { module: sfMaraePost, action: voteUp }
+
+post_vote_down:
+  url:     /post/:id/votedown
+  class:   sfDoctrineRoute
+  options: { model: sfMaraePost, type: object }
+  param:   { module: sfMaraePost, action: voteDown }
+
 post_search:
   url:     /forum/search/:slug
   options: { model: sfMaraeCategory, type: object }

@@ -1,0 +1,27 @@
+#marae-subcategories h4, #marae-subcategories h5{
+	margin-bottom: 0;
+}
+
+#marae-posts-tree ol {
+	list-style-type: none;
+}
+
+.marae-post {
+	border: 1px #ddd solid;
+	padding: 1em;
+	margin: 1em;
+}
+
+ul.marae-post-options {
+	padding-left: 0;
+	font-size: smaller;
+}
+
+ul.marae-post-options li {
+	display: inline;
+	padding-right: 10px;
+}
+
+ul.marae-post-options li.marae-post-vote-up, ul.marae-post-options li.marae-post-vote-down {
+	display: none;
+}

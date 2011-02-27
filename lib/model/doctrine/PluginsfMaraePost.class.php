@@ -33,9 +33,10 @@ abstract class PluginsfMaraePost extends BasesfMaraePost
 	public function baseQuery($as_object = false)
 	{
 		$q = Doctrine_Query::create()
-			->select('p.*, gu.username')
+			->select('p.*, gu.username, pv.vote')
 			->from('sfMaraePost p')
 			->innerJoin('p.sfGuardUser gu')
+			->leftJoin('p.sfMaraePostVote pv')
 			->where('p.category_id = ?', $this->getCategoryId())
 			->orderBy('p.rgt DESC');
 			
@@ -64,5 +65,15 @@ abstract class PluginsfMaraePost extends BasesfMaraePost
 			->fetchOne(null, Doctrine_Core::HYDRATE_ARRAY);
 			
 		return $q['max_root_id'];
+	}
+	
+	public static function getOpacity($rating)
+	{
+		return sprintf("%.2f", ((((pow($rating-1, 6)*-1)*0.4)+1)));
+	}
+	
+	public static function getColor($rating)
+	{
+		return sprintf('#%1$xff%1$x', 255-(pow($rating, 3)*63));		
 	}
 }

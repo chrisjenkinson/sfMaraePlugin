@@ -24,8 +24,8 @@ sfMaraePost:
   relations:
     sfMaraeCategory: { local: category_id, foreign: id, onDelete: CASCADE }
     sfGuardUser:     { local: user_id, foreign: id, onDelete: CASCADE }
+    sfMaraeVoters:   { class: sfGuardUser, local: user_id, foreign: id, refClass: sfMaraePostVote, foreignAlias: sfMaraePost }
 #    sfMaraeTags:     { class: sfMaraeTag, local: id, foreign: id, refClass: sfMaraePostTag, foreignAlias: sfMaraePosts }
-#    sfMaraeVoter:    { class: sfGuardUser, local: id, foreign: id, refClass: sfMaraePostVote, foreignAlias: sfMaraePosts }
 
 # sfMaraeTag:
 #   actAs: [Sluggable]
@@ -48,11 +48,11 @@ sfMaraePost:
 #     sfMaraePost: { local: post_id, foreign: id, onDelete: CASCADE }
 #     sfMaraeTag:  { local: tag_id, foreign: id, onDelete: CASCADE }
 
-# sfMaraePostVote:
-#   columns:
-#     post_id: { type: integer, primary: true }
-#     user_id: { type: integer, primary: true }
-#     vote:    { type: integer, notnull: true, default: 0 }
-#   relations:
-#     sfMaraePost: { local: post_id, foreign: id, onDelete: CASCADE }
-#     sfGuardUser: { local: user_id, foreign: id, onDelete: CASCADE }
+sfMaraePostVote:
+  columns:
+    post_id: { type: integer, primary: true }
+    user_id: { type: integer, primary: true }
+    vote:    { type: integer, notnull: true, default: 0 }
+  relations:
+    sfMaraePost: { local: post_id, foreign: id, onDelete: CASCADE }
+    sfGuardUser: { local: user_id, foreign: id, onDelete: CASCADE }

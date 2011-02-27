@@ -34,7 +34,14 @@ class sfMaraeCategoryActions extends BasesfMaraeCategoryActions
 			$rootIds[] = $root['id'];
 		}
 		
-		$this->categories = $tree->fetchTree(array('root_id' => $rootIds));
+		if (!empty($rootIds))
+		{
+			$this->categories = $tree->fetchTree(array('root_id' => $rootIds));
+		}
+		else
+		{
+			$this->categories = array();
+		}
 	}
 	
 	public function executeShow(sfWebRequest $request)
