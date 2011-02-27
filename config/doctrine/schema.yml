@@ -24,7 +24,7 @@ sfMaraePost:
   relations:
     sfMaraeCategory: { local: category_id, foreign: id, onDelete: CASCADE }
     sfGuardUser:     { local: user_id, foreign: id, onDelete: CASCADE }
-    sfMaraeVoters:   { class: sfGuardUser, local: user_id, foreign: id, refClass: sfMaraePostVote, foreignAlias: sfMaraePost }
+    sfMaraeVoters:   { class: sfGuardUser, local: post_id, foreign: user_id, refClass: sfMaraePostVote, foreignAlias: sfMaraePosts }
 #    sfMaraeTags:     { class: sfMaraeTag, local: id, foreign: id, refClass: sfMaraePostTag, foreignAlias: sfMaraePosts }
 
 # sfMaraeTag:
