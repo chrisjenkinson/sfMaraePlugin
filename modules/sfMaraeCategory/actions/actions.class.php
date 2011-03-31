@@ -65,6 +65,7 @@ class sfMaraeCategoryActions extends BasesfMaraeCategoryActions
 		$post->orderByCreatedAt();
 		
 		$this->posts = $postTree->fetchRoots();
+		$this->postsReversed = array_reverse($this->posts);
 
 		$this->can_post_new = $this->checkPermission('new', $this->root['id']);
 		

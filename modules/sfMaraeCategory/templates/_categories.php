@@ -1,4 +1,5 @@
 <?php if (!empty($categories) && count($categories)): ?>
+<hr class="space" />
 <h3>Categories</h3>
 <div id="marae-subcategories">
 <?php foreach ($categories as $k => $root): ?>

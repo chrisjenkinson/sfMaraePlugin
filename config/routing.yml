@@ -3,10 +3,10 @@ forum:
   options: { model: sfMaraeCategory, module: sfMaraeCategory, prefix_path: /forum, actions: [list, show] }
 
 forum_show_forum:
-  url:     /forum/:slug
+  url:     /forum/:slug.:sf_format
   class:   sfDoctrineRoute
   options: { model: sfMaraeCategory, type: object }
-  param:   { module: sfMaraeCategory, action: show }
+  param:   { module: sfMaraeCategory, action: show, sf_format: "html" }
 
 post_vote_up:
   url:     /post/:id/voteup
