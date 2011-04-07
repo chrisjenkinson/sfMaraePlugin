@@ -8,7 +8,7 @@
 <?php $hasVotedUp = ($sf_user->isAuthenticated() ? sfMaraePostVote::hasUserVoted($root['sfMaraePostVote'], $sf_user->getId(), sfMaraePostVote::VOTE_UP) : false) ?>
 <?php $hasVotedDown = ($sf_user->isAuthenticated() ? sfMaraePostVote::hasUserVoted($root['sfMaraePostVote'], $sf_user->getId(), sfMaraePostVote::VOTE_DOWN) : false) ?>
 
-<li>
+<li id="marae-post-container-<?php echo $root['id'] ?>">
 
 <div class="span-14">
 	<div id="marae-post-<?php echo $root['id'] ?>" class="marae-post" style="opacity: <?php echo $opacity ?>; background-color: <?php echo $color ?>">
@@ -25,12 +25,12 @@
 		<div class="marae-post-message"><?php echo $rootPurified['message'] ?></div>
 		
 		<ul class="marae-post-options quiet">
-			<li><?php echo link_to('permalink', '@post_show_post?id=' . $root['id'], array('anchor' => 'marae-post-' . $root['id'])) ?></li>
+			<li><?php echo link_to('permalink', sprintf('@post_show_post?id=%d&slug=%s', $root['id'], $root['slug']), array('anchor' => 'marae-post-' . $root['id'])) ?></li>
 			<?php if (!empty($parent_id)): ?>
 				<li><a href="#marae-post-<?php echo $parent_id ?>">parent</a></li>
 			<?php endif; ?>
-			<li><?php echo link_to('reply', '@post_reply?id=' . $root['id']) ?></li>
 			<?php if ($sf_user->isAuthenticated()): ?>
+				<li id="marae-post-reply-open-<?php echo $root['id'] ?>"><?php echo link_to('reply', '@post_reply?id=' . $root['id']) ?></li>
 				<?php if ($root['user_id'] == $sf_user->getId()): ?>
 					<li><?php echo link_to('edit', '@post_edit?id=' . $root['id']) ?></li>
 					<?php if (!(!empty($children) && count($children))): ?>

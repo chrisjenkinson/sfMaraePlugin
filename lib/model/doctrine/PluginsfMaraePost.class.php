@@ -61,7 +61,6 @@ abstract class PluginsfMaraePost extends BasesfMaraePost
 		$q = Doctrine_Query::create()
 			->select('MAX(root_id) AS max_root_id')
 			->from('sfMaraePost')
-			->where('category_id = ?', $this->getCategoryId())
 			->fetchOne(null, Doctrine_Core::HYDRATE_ARRAY);
 			
 		return $q['max_root_id'];

@@ -25,10 +25,10 @@
 
 <hr />
 
-<?php include_partial('posts_list', array('posts' => $posts)) ?>
+<?php include_partial('posts_list', array('posts' => $posts, 'canPostNew' => $canPostNew)) ?>
 
 <hr />
 
-<?php if ($can_post_new): ?>
+<?php if ($canPostNew): ?>
 <?php include_partial('sfMaraePost/post_new', array('form' => $form, 'category' => $root)) ?>
 <?php endif; ?>

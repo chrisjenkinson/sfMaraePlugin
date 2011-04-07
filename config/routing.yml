@@ -1,6 +1,6 @@
 forum:
   class:   sfDoctrineRouteCollection
-  options: { model: sfMaraeCategory, module: sfMaraeCategory, prefix_path: /forum, actions: [list, show] }
+  options: { model: sfMaraeCategory, module: sfMaraeCategory, prefix_path: /forums, actions: [list, show] }
 
 forum_show_forum:
   url:     /forum/:slug.:sf_format
@@ -9,24 +9,24 @@ forum_show_forum:
   param:   { module: sfMaraeCategory, action: show, sf_format: "html" }
 
 post_vote_up:
-  url:     /post/:id/voteup
+  url:     /posts/:id/voteup
   class:   sfDoctrineRoute
   options: { model: sfMaraePost, type: object }
   param:   { module: sfMaraePost, action: voteUp }
 
 post_vote_down:
-  url:     /post/:id/votedown
+  url:     /posts/:id/votedown
   class:   sfDoctrineRoute
   options: { model: sfMaraePost, type: object }
   param:   { module: sfMaraePost, action: voteDown }
 
 post_search:
-  url:     /forum/search/:slug
+  url:     /forums/search/:slug
   options: { model: sfMaraeCategory, type: object }
   param:   { module: sfMaraePost, action: search, slug: "" }
 
 post_new:
-  url:     /post/:id/new
+  url:     /posts/:id/new
   class:   sfDoctrineRoute
   options: { model: sfMaraeCategory, type: object }
   param:   { module: sfMaraePost, action: new }
@@ -34,7 +34,7 @@ post_new:
     sf_method: get
 
 post_new_create:
-  url:     /post/:id/new
+  url:     /posts/:id/new
   class:   sfDoctrineRoute
   options: { model: sfMaraeCategory, type: object }
   param:   { module: sfMaraePost, action: createNew }
@@ -42,7 +42,7 @@ post_new_create:
     sf_method: post
 
 post_reply:
-  url:     /post/:id/reply
+  url:     /posts/:id/reply
   class:   sfDoctrineRoute
   options: { model: sfMaraePost, type: object }
   param:   { module: sfMaraePost, action: reply }
@@ -50,7 +50,7 @@ post_reply:
     sf_method: get
 
 post_reply_create:
-  url:     /post/reply
+  url:     /posts/reply
   class:   sfDoctrineRoute
   options: { model: sfMaraePost, type: object }
   param:   { module: sfMaraePost, action: createReply }
@@ -59,13 +59,11 @@ post_reply_create:
 
 post:
   class:   sfDoctrineRouteCollection
-  options: { model: sfMaraePost, module: sfMaraePost, prefix_path: /post, actions: [list, show, edit, update, delete] }
+  options: { model: sfMaraePost, module: sfMaraePost, prefix_path: /posts, actions: [list, show, edit, update, delete] }
 
 post_show_post:
-  url:     /post/:id/:replies
+  url:     /post/:id/:slug
   class:   sfDoctrineRoute
   options: { model: sfMaraePost, type: object }
-  param:   { module: sfMaraePost, action: show, replies: 0 }
-  requirements:
-    replies: \d+
+  param:   { module: sfMaraePost, action: show }
 

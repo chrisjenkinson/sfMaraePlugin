@@ -16,7 +16,7 @@
 		<?php foreach ($posts as $root): ?>
 		<tr>
 			<td>
-				<div class="marae-post-title"><?php echo link_to($root['title'], 'post_show_post', array('id' => $root['id'], 'replies' => (($root['rgt'] - $root['lft'] - 1)/2))) ?></div>
+				<div class="marae-post-title"><?php echo link_to($root['title'], 'post_show_post', array('id' => $root['id'], 'slug' => $root['slug'])) ?></div>
 				<div class="marae-post-about quiet smaller">posted by <strong><?php echo $root['sfGuardUser']['username'] ?></strong> <?php echo time_ago_in_words(strtotime($root['created_at']), true) ?> ago</div>
 			</td>
 			<td class="center">
@@ -26,7 +26,7 @@
 		<?php endforeach; ?>
 		<?php else: ?>
 		<tr>
-			<td colspan="2" class="center"><div class="prepend-top">There are no posts yet - why not be the first?</div></td>
+			<td colspan="2" class="center"><div class="prepend-top">There are no posts yet<?php if ($canPostNew): ?> - why not be the first?<?php else: ?>.<?php endif; ?></div></td>
 		</tr>
 		<?php endif; ?>
 	</tbody>

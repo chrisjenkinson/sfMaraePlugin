@@ -35,7 +35,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 		if (!$node->isRoot())
 		{
 			$root = $tree->fetchRoot($node->getRootValue());
-			$this->redirect($this->generateUrl('post_show_post', array('id' => $root['id'], 'replies' => (($root['rgt'] - $root['lft'] - 1) / 2))));
+			$this->redirect($this->generateUrl('post_show_post', array('id' => $root['id'], 'slug' => $root['slug'])));
 		}
 		
 		$this->posts = $post->getNode()->getDescendants();
@@ -111,7 +111,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 		
 		$this->redirect($this->generateUrl('post_show_post', array(
 			'id'		=> $root['id'],
-			'replies'	=> (($root['rgt'] - $root['lft'] - 1) / 2)
+			'slug'	=> $root['slug']
 		)) . '#marae-post-' . $post['id']);
 	}
 	
@@ -184,6 +184,11 @@ class sfMaraePostActions extends BasesfMaraePostActions
 		$this->form = new sfMaraePostForm($reply);
 		
 		$this->form->setDefault('parent_id', $this->post['id']);
+		
+		if ($request->isXmlHttpRequest())
+		{
+			return $this->renderPartial('post_reply', array('form' => $this->form, 'replyId' => $this->post['id']));
+		}
 	}
 	
 	public function executeCreateReply(sfWebRequest $request)
@@ -226,7 +231,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 			$this->getUser()->setFlash('error', "You cannot edit another person's post!");
 			$this->redirect($this->generateUrl('post_show_post', array(
 				'id'		=> $root['id'],
-				'replies'	=> (($root['rgt'] - $root['lft'] - 1) / 2)
+				'slug'	=> $root['slug']
 			)));
 		}
 		
@@ -290,7 +295,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 			$this->getUser()->setFlash('error', "You cannot delete another person's post!");
 			$this->redirect($this->generateUrl('post_show_post', array(
 				'id'		=> $root['id'],
-				'replies'	=> (($root['rgt'] - $root['lft'] - 1) / 2)
+				'slug'	=> $root['slug']
 			)));
 		}
 		
@@ -299,7 +304,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 			$this->getUser()->setFlash('error', "You cannot delete a post which has replies.");
 			$this->redirect($this->generateUrl('post_show_post', array(
 				'id'		=> $root['id'],
-				'replies'	=> (($root['rgt'] - $root['lft'] - 1) / 2)
+				'slug'	=> $root['slug']
 			)));
 		}
 		
@@ -319,7 +324,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 			
 			$this->redirect($this->generateUrl('post_show_post', array(
 				'id'		=> $root['id'],
-				'replies'	=> (($root['rgt'] - $root['lft'] - 1) / 2)
+				'slug'	=> $root['slug']
 			)));
 		}
 	}
@@ -345,7 +350,8 @@ class sfMaraePostActions extends BasesfMaraePostActions
 				$post->save();
 				
 				$this->redirect($this->generateUrl('post_show_post', array(
-					'id'		=> $post['id']
+					'id'		=> $post['id'],
+					'slug'	=> $post['slug']
 				)) . '#marae-post-' . $post['id']);
 			}
 			else
@@ -370,7 +376,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 					
 					$this->redirect($this->generateUrl('post_show_post', array(
 						'id'		=> $root['id'],
-						'replies'	=> (($root['rgt'] - $root['lft'] - 1) / 2)
+						'slug'	=> $root['slug']
 					)) . '#marae-post-' . $post['id']);
 				}
 				else
@@ -388,7 +394,7 @@ class sfMaraePostActions extends BasesfMaraePostActions
 					
 					$this->redirect($this->generateUrl('post_show_post', array(
 						'id'		=> $post['id'], 
-						'replies'	=>  0,
+						'slug'	=>  $post['slug']
 					)));
 				}
 			}

@@ -48,14 +48,18 @@ class sfMaraeCategoryActions extends BasesfMaraeCategoryActions
 	{
 		$this->root = $this->getRoute()->getObject();
 		
+		$this->root->getTable()->getTree()->setBaseQuery(sfMaraeCategory::baseQuery());
+		
+		$this->node = $this->root->getNode();
+		
 		if (!$this->checkPermission('show', $this->root['id']))
 		{
 			$this->getUser()->setFlash('error', 'You do not have permission to view that forum.');
 			$this->redirect($this->generateUrl('forum'));
 		}
 		
-		$this->ancestors = $this->root->getNode()->getAncestors();
-		$this->categories = $this->root->getNode()->getDescendants();
+		$this->ancestors = $this->node->getAncestors();
+		$this->categories = $this->node->getDescendants();
 		
 		$post = new sfMaraePost();
 		$post->setCategoryId($this->root['id']);
@@ -67,9 +71,9 @@ class sfMaraeCategoryActions extends BasesfMaraeCategoryActions
 		$this->posts = $postTree->fetchRoots();
 		$this->postsReversed = array_reverse($this->posts);
 
-		$this->can_post_new = $this->checkPermission('new', $this->root['id']);
+		$this->canPostNew = $this->checkPermission('new', $this->root['id']) && $this->userSignedIn;
 		
-		if ($this->can_post_new)
+		if ($this->canPostNew)
 		{
 			$this->form = new sfMaraePostForm($post, array('isRoot' => true));
 		}
@@ -80,13 +84,14 @@ class sfMaraeCategoryActions extends BasesfMaraeCategoryActions
 		$logger = $this->getContext()->getLogger();
 		
 		$this->user = $this->getUser()->getGuardUser();
+		$this->userSignedIn = ($this->user instanceof sfGuardUser);
 		$permissionName = sprintf('sfMaraeCategory_%d_%s', $id, $action);
 		
 		$this->permissions = sfGuardPermissionTable::getInstance();
 		
 		if ($this->permissions->findOneByName($permissionName))
 		{
-			if (!($this->user instanceof sfGuardUser))
+			if (!($this->userSignedIn))
 			{
 				$logger->info(sprintf('checking %s - permission defined, user not logged in', $permissionName));
 				return false;

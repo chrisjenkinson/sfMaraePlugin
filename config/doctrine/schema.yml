@@ -15,6 +15,7 @@ sfMaraePost:
       hasManyRoots:   true
       rootColumnName: root_id
     Timestampable: ~
+    Sluggable: ~
   columns:
     id:          { type: integer, primary: true, autoincrement: true }
     category_id: { type: integer, notnull: true }
