@@ -17,7 +17,7 @@
 
 		<item>
 			<title><?php echo $item['title'] ?></title>
-			<link><?php echo url_for('@post_show_post?id=' . $item['id'] . '&replies=' . (($item['rgt'] - $item['lft'] - 1)/2), true) ?></link>
+			<link><?php echo url_for(sprintf('@post_show_post?id=%d&slug=%s', $item['id'], $item['slug']), true) ?></link>
 			<description><![CDATA[<?php echo $postsReversedPurified[$k]['message'] ?>]]></description>
 			<pubDate><?php echo date('r', strtotime($item['created_at'])) ?></pubDate>
 			<guid isPermaLink="true"><?php echo url_for('@post_show?id=' . $item['id'], true) ?></guid>
